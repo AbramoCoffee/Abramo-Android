@@ -13,6 +13,7 @@ OrderItemModel _$OrderItemModelFromJson(Map<String, dynamic> json) =>
       menuId: (json['menu_id'] as num?)?.toInt(),
       qty: (json['qty'] as num?)?.toInt(),
       price: (json['price'] as num?)?.toInt(),
+      note: json['note'] as String?,
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
@@ -34,6 +35,7 @@ Map<String, dynamic> _$OrderItemModelToJson(OrderItemModel instance) =>
       'menu_id': instance.menuId,
       'qty': instance.qty,
       'price': instance.price,
+      'note': instance.note,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'menu': instance.menu?.toJson(),

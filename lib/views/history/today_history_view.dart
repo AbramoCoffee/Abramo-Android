@@ -43,15 +43,17 @@ class TodayHistoryView extends StatelessWidget {
                               onTap: () async {
                                 log("Order ID : ${element.id!}");
 
-                                await orderItemController
-                                    .getAllOrderItemByOrder(element.id ?? 1);
+                                // await orderItemController
+                                // .getAllOrderItemByOrder(element.id ?? 1);
 
                                 // print(element.id);
                                 Get.to(() => DetailHistoryView(
-                                    // isKitchen: isKitchen,
-                                    ordersModel: element,
-                                    listOrderItemModel: orderItemController
-                                        .listOrderItemModel));
+                                      // isKitchen: isKitchen,
+                                      ordersModel: element,
+                                      idOrder: element.id ?? 1,
+                                      // listOrderItemModel: orderItemController
+                                      //     .listOrderItemModel
+                                    ));
                               }))
                           .toList(),
                     ),

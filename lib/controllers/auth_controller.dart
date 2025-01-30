@@ -80,6 +80,9 @@ class AuthController extends GetxController {
       isLoading.value = false;
       AuthProvider.removeAuthData();
       if (res) {
+        _box.remove(uName);
+        _box.remove(uEmail);
+        _box.remove(uRole);
         Get.offAll(const LoginView());
       }
       return res;

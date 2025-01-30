@@ -21,7 +21,9 @@ class CartProvider {
     final path = join(dbPath, sqfliteDatabaseName);
     log('Database initiated');
     return await openDatabase(path,
-        version: sqfliteDatabaseVersion, onCreate: _onCreate);
+        version: sqfliteDatabaseVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -37,6 +39,15 @@ class CartProvider {
     ''');
   }
 
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (newVersion > oldVersion) {
+      // Add new column here
+      await db.execute('''
+        ALTER TABLE $cartTable ADD COLUMN $cartColumnNote TEXT NULL
+      ''');
+    }
+  }
+
   Future<int> insert(CartModel cartModel) async {
     final db = await database;
     log("""
@@ -47,6 +58,7 @@ Cart Model Quantity = ${cartModel.quantity}
 Cart Model Price = ${cartModel.price}
 Cart Model Image = ${cartModel.image}
 Cart Model Sub Total = ${cartModel.subTotalPerItem}
+Cart Model Note = ${cartModel.note}
 """);
     log("${cartModel.toMap()}");
     return await db.insert(cartTable, cartModel.toMap());
@@ -57,12 +69,14 @@ Cart Model Sub Total = ${cartModel.subTotalPerItem}
     final List<Map<String, dynamic>> maps = await db.query(cartTable);
     return List.generate(maps.length, (i) {
       return CartModel(
-          id: maps[i][cartColumnId],
-          name: maps[i][cartColumnName],
-          quantity: maps[i][cartColumnQuantity],
-          price: maps[i][cartColumnPrice].round(),
-          image: maps[i][cartColumnImage],
-          subTotalPerItem: maps[i][cartColumSubtotalPerItem].round());
+        id: maps[i][cartColumnId],
+        name: maps[i][cartColumnName],
+        quantity: maps[i][cartColumnQuantity],
+        price: maps[i][cartColumnPrice].round(),
+        image: maps[i][cartColumnImage],
+        subTotalPerItem: maps[i][cartColumSubtotalPerItem].round(),
+        note: maps[i][cartColumnNote] ?? "",
+      );
     });
   }
 

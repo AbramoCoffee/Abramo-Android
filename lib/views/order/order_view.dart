@@ -214,14 +214,14 @@ class OrderView extends StatelessWidget {
                                                 onPressed: () {
                                                   cartController
                                                       .addToCart(CartModel(
-                                                        id: itemMenu.id,
-                                                        name: itemMenu.name,
-                                                        price: itemMenu.price,
-                                                        quantity: 1,
-                                                        image: itemMenu.image,
-                                                        subTotalPerItem:
-                                                            itemMenu.price,
-                                                      ))
+                                                          id: itemMenu.id,
+                                                          name: itemMenu.name,
+                                                          price: itemMenu.price,
+                                                          quantity: 1,
+                                                          image: itemMenu.image,
+                                                          subTotalPerItem:
+                                                              itemMenu.price,
+                                                          note: ""))
                                                       .then((value) => Get.to(
                                                           CartView(
                                                               qty: itemMenu

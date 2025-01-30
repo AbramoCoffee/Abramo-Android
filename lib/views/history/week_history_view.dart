@@ -42,15 +42,17 @@ class WeekHistoryView extends StatelessWidget {
                               price: element.totalPrice!,
                               onTap: () async {
                                 log("===== Data ItEM ==== : ${element.dataItems}");
-                                await orderItemController
-                                    .getAllOrderItemByOrder(element.id!);
+                                // await orderItemController
+                                //     .getAllOrderItemByOrder(element.id!);
 
                                 // print(element.id);
                                 Get.to(DetailHistoryView(
-                                    // isKitchen: isKitchen,
-                                    ordersModel: element,
-                                    listOrderItemModel: orderItemController
-                                        .listOrderItemModel));
+                                  // isKitchen: isKitchen,
+                                  ordersModel: element,
+                                  idOrder: element.id ?? 1,
+                                  // listOrderItemModel: orderItemController
+                                  //     .listOrderItemModel
+                                ));
                               }))
                           .toList(),
                     ),

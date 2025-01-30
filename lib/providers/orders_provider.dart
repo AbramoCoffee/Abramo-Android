@@ -74,8 +74,15 @@ class OrdersProvider {
     }
   }
 
-  static Future<bool> addOrders(String konsumen, String cashier,
-      String paymentMethod, int totalPaid, List<CartModel> listCart) async {
+  static Future<bool> addOrders(
+      String konsumen,
+      String cashier,
+      String paymentMethod,
+      int subTotal,
+      int totalPrice,
+      int totalPaid,
+      int tax,
+      List<CartModel> listCart) async {
     final Dio dio = Dio();
 
     String ordersUrl = baseUrl + Endpoint.api_orders;
@@ -88,6 +95,7 @@ class OrdersProvider {
       listOrders.add({
         "menu_id": cart.id,
         "qty": cart.quantity,
+        "note": cart.note,
       });
     }
 
@@ -96,7 +104,10 @@ class OrdersProvider {
         "konsumen": konsumen,
         "cashier": cashier,
         "payment_method": paymentMethod,
+        "subtotal": subTotal,
+        "total_price": totalPrice,
         "total_paid": totalPaid,
+        "tax": tax,
         "status": "proses",
         "ordered_items": listOrders
       };

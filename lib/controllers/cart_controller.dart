@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:abramo_coffee/models/cart_model.dart';
 import 'package:abramo_coffee/providers/cart_provider.dart';
 import 'package:get/get.dart';
@@ -55,13 +57,13 @@ class CartController extends GetxController {
 
   Future increaseQuantity(CartModel item) async {
     CartModel cartModel = CartModel(
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity! + 1,
-      image: item.image,
-      subTotalPerItem: item.subTotalPerItem! + item.price!,
-    );
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity! + 1,
+        image: item.image,
+        subTotalPerItem: item.subTotalPerItem! + item.price!,
+        note: "sadas");
     try {
       await CartProvider.instance
           .update(cartModel)
@@ -73,18 +75,38 @@ class CartController extends GetxController {
 
   Future decreaseQuantity(CartModel item) async {
     CartModel cartModel = CartModel(
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity! - 1,
-      image: item.image,
-      subTotalPerItem: item.subTotalPerItem! - item.price!,
-    );
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity! - 1,
+        image: item.image,
+        subTotalPerItem: item.subTotalPerItem! - item.price!,
+        note: item.note!);
     try {
       await CartProvider.instance.update(cartModel).then((value) {
         if (cartItems.isNotEmpty) {
           getCartItems().then((value) => getItemSubtotal());
         }
+      });
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future updateNote(CartModel item, String note) async {
+    CartModel cartModel = CartModel(
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity!,
+        image: item.image,
+        subTotalPerItem: item.subTotalPerItem!,
+        note: note);
+    try {
+      log("update note");
+
+      await CartProvider.instance.update(cartModel).then((value) {
+        getCartItems();
       });
     } catch (e) {
       throw Exception(e);

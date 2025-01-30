@@ -45,22 +45,25 @@ class MonthHistoryView extends StatelessWidget {
                               onTap: () async {
                                 log("Order ID : ${element.id!}");
 
-                                await orderItemController
-                                    .getAllOrderItemByOrder(element.id!);
+                                // await orderItemController
+                                //     .getAllOrderItemByOrder(element.id!);
 
                                 // print(element.id);
-                                var res = await Get.to(DetailHistoryView(
-                                    // isKitchen: isKitchen,
-                                    ordersModel: element,
-                                    listOrderItemModel: orderItemController
-                                        .listOrderItemModel));
+                                Get.to(DetailHistoryView(
+                                  // isKitchen: isKitchen,
+                                  ordersModel: element,
+                                  idOrder: element.id ?? 1,
 
-                                if (res is bool) {
-                                  if (res) {
-                                    await orderItemController
-                                        .getAllOrderItemByOrder(element.id!);
-                                  }
-                                }
+                                  // listOrderItemModel: orderItemController
+                                  //     .listOrderItemModel
+                                ));
+
+                                // if (res is bool) {
+                                //   if (res) {
+                                //     await orderItemController
+                                //         .getAllOrderItemByOrder(element.id!);
+                                //   }
+                                // }
                               }))
                           .toList(),
                     ),

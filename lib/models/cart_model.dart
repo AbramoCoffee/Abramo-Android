@@ -9,6 +9,7 @@ class CartModel {
   final int? quantity;
   final String? image;
   final int? subTotalPerItem;
+  final String? note;
 
   const CartModel({
     this.id,
@@ -17,6 +18,7 @@ class CartModel {
     this.quantity,
     this.image,
     this.subTotalPerItem,
+    this.note,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> json) =>
@@ -31,6 +33,7 @@ class CartModel {
     data['quantity'] = quantity;
     data['image'] = image;
     data['subTotalPerItem'] = subTotalPerItem;
+    data['note'] = note;
     return data;
   }
 }

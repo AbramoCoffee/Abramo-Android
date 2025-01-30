@@ -27,13 +27,13 @@ class ItemCardDetailOrder extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RichText(
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                    text: orderItemModel.menu!.name ?? "Error",
-                    style: bold.copyWith(color: cYellowDark, fontSize: 17))),
-            const SizedBox(height: 12),
+            // RichText(
+            //     maxLines: 3,
+            //     overflow: TextOverflow.ellipsis,
+            //     text: TextSpan(
+            //         text: orderItemModel.menu!.name ?? "Error",
+            //         style: bold.copyWith(color: cYellowDark, fontSize: 17))),
+            // const SizedBox(height: 5),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -44,7 +44,7 @@ class ItemCardDetailOrder extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(orderItemModel.menu?.code ?? "Error",
+                    Text(orderItemModel.menu!.name ?? "Error",
                         style: bold.copyWith(color: cYellowDark, fontSize: 20)),
                     const SizedBox(height: 8),
                     Text(
@@ -75,6 +75,17 @@ class ItemCardDetailOrder extends StatelessWidget {
                 )
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, top: 5),
+              child: Text("Catatan",
+                  style: bold.copyWith(color: cYellowDark, fontSize: 18)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, top: 5),
+              child: Text(orderItemModel.note ?? "",
+                  style: bold.copyWith(color: cYellowDark, fontSize: 15)),
+            ),
+            const SizedBox(height: 5),
             const SizedBox(width: 12),
           ],
         ),

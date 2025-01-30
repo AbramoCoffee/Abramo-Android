@@ -80,7 +80,7 @@ class WeekIncomeReportView extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         padding: const EdgeInsets.fromLTRB(25, 5, 15, 25),
-        height: 120,
+        height: 140,
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

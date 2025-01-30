@@ -12,7 +12,7 @@ import '../resources/endpoint.dart';
 class MenusProvider {
   static Future<MenuModel> getMenu(int id) async {
     String menuUrl = "$baseUrl${Endpoint.api_menus_id}$id";
-
+  
     final authData = await AuthProvider.getAuthData();
 
     try {

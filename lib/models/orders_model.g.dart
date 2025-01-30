@@ -12,9 +12,11 @@ OrdersModel _$OrdersModelFromJson(Map<String, dynamic> json) => OrdersModel(
       konsumen: json['konsumen'] as String?,
       cashier: json['cashier'] as String?,
       paymentMethod: json['payment_method'] as String?,
+      subtotal: (json['subtotal'] as num?)?.toInt(),
       totalPrice: (json['total_price'] as num?)?.toInt(),
       totalPaid: (json['total_paid'] as num?)?.toInt(),
       totalReturn: (json['total_return'] as num?)?.toInt(),
+      tax: (json['tax'] as num?)?.toInt(),
       status: json['status'] as String?,
       createdAt: json['created_at'] == null
           ? null
@@ -34,9 +36,11 @@ Map<String, dynamic> _$OrdersModelToJson(OrdersModel instance) =>
       'konsumen': instance.konsumen,
       'cashier': instance.cashier,
       'payment_method': instance.paymentMethod,
+      'subtotal': instance.subtotal,
       'total_price': instance.totalPrice,
       'total_paid': instance.totalPaid,
       'total_return': instance.totalReturn,
+      'tax': instance.tax,
       'status': instance.status,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),

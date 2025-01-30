@@ -104,13 +104,20 @@ class OrdersController extends GetxController
     }
   }
 
-  Future<bool> addOrders(String konsumen, String cashier, String paymentMethod,
-      int totalPaid, List<CartModel> listCart) async {
+  Future<bool> addOrders(
+      String konsumen,
+      String cashier,
+      String paymentMethod,
+      int subTotal,
+      int totalPrice,
+      int totalPaid,
+      int tax,
+      List<CartModel> listCart) async {
     try {
       isLoading.value = true;
 
-      var res = await OrdersProvider.addOrders(
-          konsumen, cashier, paymentMethod, totalPaid, listCart);
+      var res = await OrdersProvider.addOrders(konsumen, cashier, paymentMethod,
+          subTotal, totalPrice, totalPaid, tax, listCart);
 
       isLoading.value = false;
       return res;

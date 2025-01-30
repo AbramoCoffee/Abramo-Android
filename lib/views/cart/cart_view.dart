@@ -80,30 +80,86 @@ class _CartViewState extends State<CartView> {
                       itemCount: cartController.cartItems.length,
                       itemBuilder: (context, index) {
                         var itemCart = cartController.cartItems[index];
+                        TextEditingController noteController =
+                            TextEditingController();
                         return ItemCartComponent(
+                          noteController: noteController,
+                          onNote: () async {
+                            if (noteController.value.text.isEmpty) {
+                              Get.snackbar("Kesalahan",
+                                  "Jumlah ketersediaan harap diisi");
+                            }
+
+                            if (noteController.value.text.isNotEmpty) {
+                              await cartController.updateNote(
+                                  itemCart, noteController.text);
+                            }
+                          },
                           cartModel: itemCart,
                           itemQuantity: itemCart.quantity!,
                         );
                       }))),
       bottomNavigationBar: BottomAppBar(
           padding: const EdgeInsets.all(10),
-          height: 170,
+          height: 210,
           child: Obx(
             () => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Total",
-                    textAlign: TextAlign.center,
-                    style: bold.copyWith(fontSize: 20, color: cYellowDark)),
-                const SizedBox(height: 5),
-                Text(RupiahUtils.beRupiah(cartController.subtotal.toInt()),
-                    textAlign: TextAlign.center,
-                    style: bold.copyWith(fontSize: 17, color: cYellowPrimary)),
-                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Subtotal",
+                        textAlign: TextAlign.center,
+                        style: bold.copyWith(fontSize: 17, color: cYellowDark)),
+                    const SizedBox(width: 185),
+                    Text(RupiahUtils.beRupiah(cartController.subtotal.toInt()),
+                        textAlign: TextAlign.center,
+                        style:
+                            bold.copyWith(fontSize: 17, color: cYellowPrimary)),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("PPN (11%)",
+                        textAlign: TextAlign.center,
+                        style: bold.copyWith(fontSize: 17, color: cYellowDark)),
+                    const SizedBox(height: 5),
+                    Text(
+                        RupiahUtils.beRupiah(
+                            cartController.subtotal.toInt() * 11 ~/ 100),
+                        textAlign: TextAlign.center,
+                        style:
+                            bold.copyWith(fontSize: 17, color: cYellowPrimary)),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Total",
+                        textAlign: TextAlign.center,
+                        style: bold.copyWith(fontSize: 17, color: cYellowDark)),
+                    const SizedBox(height: 5),
+                    Text(
+                        RupiahUtils.beRupiah(cartController.subtotal.toInt() +
+                            (cartController.subtotal.toInt() * 11 ~/ 100)),
+                        textAlign: TextAlign.center,
+                        style:
+                            bold.copyWith(fontSize: 17, color: cYellowPrimary)),
+                  ],
+                ),
+                const SizedBox(height: 15),
                 Text("Pilih Pembayaran",
                     textAlign: TextAlign.center,
-                    style: bold.copyWith(fontSize: 20, color: cYellowDark)),
+                    style: bold.copyWith(fontSize: 17, color: cYellowDark)),
+                const SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -118,7 +174,7 @@ class _CartViewState extends State<CartView> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             width: 350,
-                            height: 250,
+                            height: 300,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -126,6 +182,21 @@ class _CartViewState extends State<CartView> {
                                     style: bold.copyWith(
                                         fontSize: 20, color: cYellowDark)),
                                 const SizedBox(height: 15),
+                                Text("Total",
+                                    textAlign: TextAlign.center,
+                                    style: bold.copyWith(
+                                        fontSize: 20, color: cYellowDark)),
+                                const SizedBox(height: 5),
+                                Text(
+                                    RupiahUtils.beRupiah(
+                                        cartController.subtotal.toInt() +
+                                            (cartController.subtotal.toInt() *
+                                                11 ~/
+                                                100)),
+                                    textAlign: TextAlign.center,
+                                    style: bold.copyWith(
+                                        fontSize: 17, color: cYellowPrimary)),
+                                const SizedBox(height: 10),
                                 TextFieldOutlinedComponent(
                                     validator: "Nama konsumen harap diisi",
                                     hintText: "Nama Konsumen",
@@ -281,10 +352,19 @@ class _CartViewState extends State<CartView> {
                                                   .text,
                                               userName,
                                               "Tunai",
+                                              cartController.subtotal.toInt(),
+                                              cartController.subtotal.toInt() +
+                                                  (cartController.subtotal
+                                                          .toInt() *
+                                                      11 ~/
+                                                      100),
                                               int.parse(ordersController
                                                   .inputCashController
                                                   .value
                                                   .text),
+                                              cartController.subtotal.toInt() *
+                                                  11 ~/
+                                                  100,
                                               cartController.cartItems);
 
                                           // Get.snackbar("Test", "TEST");
@@ -337,8 +417,13 @@ class _CartViewState extends State<CartView> {
                                                     Text(
                                                         RupiahUtils.beRupiah(
                                                             cartController
-                                                                .subtotal
-                                                                .toInt()),
+                                                                    .subtotal
+                                                                    .toInt() +
+                                                                (cartController
+                                                                        .subtotal
+                                                                        .toInt() *
+                                                                    11 ~/
+                                                                    100)),
                                                         style: bold.copyWith(
                                                             fontSize: 15,
                                                             color:
@@ -368,14 +453,19 @@ class _CartViewState extends State<CartView> {
                                                                 cYellowDark)),
                                                     const SizedBox(height: 10),
                                                     Text(
-                                                        RupiahUtils.beRupiah(
-                                                            int.parse(ordersController
+                                                        RupiahUtils.beRupiah(int.parse(
+                                                                ordersController
                                                                     .inputCashController
                                                                     .value
                                                                     .text) -
-                                                                cartController
+                                                            (cartController
                                                                     .subtotal
-                                                                    .toInt()),
+                                                                    .toInt() +
+                                                                (cartController
+                                                                        .subtotal
+                                                                        .toInt() *
+                                                                    11 ~/
+                                                                    100))),
                                                         style: bold.copyWith(
                                                             fontSize: 15,
                                                             color:
@@ -461,7 +551,7 @@ class _CartViewState extends State<CartView> {
                                                               printer
                                                                   .printNewLine();
                                                               printer.printCustom(
-                                                                  "Jl. Pulasaren No. 102, Cirebon",
+                                                                  "Jl. Rajawali Raya No. 102, Cirebon",
                                                                   1,
                                                                   1);
                                                               printer
@@ -533,7 +623,7 @@ class _CartViewState extends State<CartView> {
                                                               printer.printCustom(
                                                                   "Kembalian              " +
                                                                       // "1000",
-                                                                      RupiahUtils.beRupiah(int.parse(ordersController.inputCashController.value.text) - cartController.subtotal.toInt()),
+                                                                      RupiahUtils.beRupiah(int.parse(ordersController.inputCashController.value.text) - (cartController.subtotal.toInt() + (cartController.subtotal.toInt() * 11 ~/ 100))),
                                                                   1,
                                                                   1);
                                                               printer
@@ -587,7 +677,7 @@ class _CartViewState extends State<CartView> {
                                                 "Abramo Coffee", 2, 1);
                                             printer.printNewLine();
                                             printer.printCustom(
-                                                "Jl. Pulasaren No. 102, Cirebon",
+                                                "Jl. Rajawali Raya No. 102, Cirebon",
                                                 1,
                                                 1);
                                             printer.printNewLine();
@@ -704,7 +794,10 @@ class _CartViewState extends State<CartView> {
                                 const SizedBox(height: 5),
                                 Text(
                                     RupiahUtils.beRupiah(
-                                        cartController.subtotal.toInt()),
+                                        cartController.subtotal.toInt() +
+                                            (cartController.subtotal.toInt() *
+                                                11 ~/
+                                                100)),
                                     textAlign: TextAlign.center,
                                     style: bold.copyWith(
                                         fontSize: 17, color: cYellowPrimary)),
@@ -796,6 +889,19 @@ class _CartViewState extends State<CartView> {
                                               userName,
                                               "QRIS",
                                               cartController.subtotal.toInt(),
+                                              cartController.subtotal.toInt() +
+                                                  (cartController.subtotal
+                                                          .toInt() *
+                                                      11 ~/
+                                                      100),
+                                              cartController.subtotal.toInt() +
+                                                  (cartController.subtotal
+                                                          .toInt() *
+                                                      11 ~/
+                                                      100),
+                                              cartController.subtotal.toInt() *
+                                                  11 ~/
+                                                  100,
                                               cartController.cartItems);
 
                                           Navigator.pop(context, true);
@@ -843,8 +949,13 @@ class _CartViewState extends State<CartView> {
                                                   Text(
                                                       RupiahUtils.beRupiah(
                                                           cartController
-                                                              .subtotal
-                                                              .toInt()),
+                                                                  .subtotal
+                                                                  .toInt() +
+                                                              (cartController
+                                                                      .subtotal
+                                                                      .toInt() *
+                                                                  11 ~/
+                                                                  100)),
                                                       style: bold.copyWith(
                                                           fontSize: 15,
                                                           color:
@@ -858,8 +969,13 @@ class _CartViewState extends State<CartView> {
                                                   Text(
                                                       RupiahUtils.beRupiah(
                                                           cartController
-                                                              .subtotal
-                                                              .toInt()),
+                                                                  .subtotal
+                                                                  .toInt() +
+                                                              (cartController
+                                                                      .subtotal
+                                                                      .toInt() *
+                                                                  11 ~/
+                                                                  100)),
                                                       style: bold.copyWith(
                                                           fontSize: 15,
                                                           color:

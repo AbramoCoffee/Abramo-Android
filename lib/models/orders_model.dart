@@ -10,12 +10,14 @@ class OrdersModel {
   final String? cashier;
   @JsonKey(name: "payment_method")
   final String? paymentMethod;
+  final int? subtotal;
   @JsonKey(name: "total_price")
   final int? totalPrice;
   @JsonKey(name: "total_paid")
   final int? totalPaid;
   @JsonKey(name: "total_return")
   final int? totalReturn;
+  final int? tax;
   final String? status;
   @JsonKey(name: "created_at")
   final DateTime? createdAt;
@@ -30,9 +32,11 @@ class OrdersModel {
       this.konsumen,
       this.cashier,
       this.paymentMethod,
+      this.subtotal,
       this.totalPrice,
       this.totalPaid,
       this.totalReturn,
+      this.tax,
       this.status,
       this.createdAt,
       this.updatedAt,

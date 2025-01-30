@@ -12,6 +12,7 @@ class OrderItemModel {
   final int? menuId;
   final int? qty;
   final int? price;
+  final String? note;
   @JsonKey(name: "created_at")
   final DateTime? createdAt;
   @JsonKey(name: "updated_at")
@@ -25,6 +26,7 @@ class OrderItemModel {
     this.menuId,
     this.qty,
     this.price,
+    this.note,
     this.createdAt,
     this.updatedAt,
     this.menu,
